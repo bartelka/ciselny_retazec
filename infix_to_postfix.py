@@ -26,6 +26,7 @@ def precedence(op):
 
 def infix_to_postfix(vyraz):
     op_stack = Stack()
+    vyraz = [i for i in vyraz if i != " "]
     output_list = []
     for i in vyraz:
         if i in "0123456789":
@@ -48,8 +49,33 @@ def infix_to_postfix(vyraz):
 def vypis(zoznam):
     return "".join(zoznam)
 
+def stack_processing(vyraz):
+    operand_stack = Stack()
+    o_list = [i for i in vyraz]
+    for i in o_list:
+        if i in "0123456789":
+            operand_stack.push(int(i))
+        if i in "+-*/":
+            operand_2 = operand_stack.pop()
+            operand_1 = operand_stack.pop()
+            op = vypocet(i, operand_1, operand_2)
+            operand_stack.push(op)
+    return operand_stack.pop()
+
+def vypocet(operator:str, operand_1:int, operand_2:int):
+    if operator == "+":
+        return operand_1 + operand_2
+    if operator == "-":
+        return operand_1 - operand_2
+    if operator == "*":
+        return operand_1 * operand_2
+    if operator == "/":
+        return operand_1 / operand_2
+
+
 vyraz = input("Zadaj výraz: ")
 print(vypis(infix_to_postfix(vyraz)))
+print(stack_processing(vypis(infix_to_postfix(vyraz))))
 
 #vyraz
-# (9+(3*6)/(8-3))
+# ( 9 + ( 3 * 6 ) / ( 8 - 3 ) )
